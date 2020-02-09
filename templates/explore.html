@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if is_admin == true %}
+<div style="background:transparent !important" class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h1 class="mb-5">Resource</h1>
+		<form action="./explore.php" method="POST" enctype="multipart/form-data">
+
+			<div class="form-group">
+				<label for="resource_name">Name</label>
+				<input type="text" class="form-control" name="resource_name" id="resource_name">
+			</div> <!-- form-group -->
+
+			<div class="form-group">
+				<label for="resource_url">URL</label>
+				<input type="text" class="form-control" name="resource_url" id="resource_url">
+			</div> <!-- form-group -->
+
+			<div class="form-group">
+				<label for="resource_description">Description</label>
+				<input type="text" class="form-control" name="resource_description" id="resource_description">
+			</div> <!-- form-group -->
+
+			<button type="submit" name="add_resource" class="btn btn-primary">Add Resource</button>	
+		</form>
+	</div> <!-- container -->
+</div><!-- jumbotron -->
+{% endif %}
+<div class="container mb-5">
+	<h4 class="mb-4">Resources for more information and activities</h4>
+	<div class="list-group">
+		{% for resource in resources %}
+		<a href= {{ resource.url }} class="list-group-item list-group-item-action flex-column align-items-start">
+			<h5 class="mb-1">{{ resource.name }}</h5>
+			<small>{{ resource.description }}</small>
+		</a>
+			{% if is_admin == true %}
+			<form action="./explore.php" method="POST" enctype="multipart/form-data">
+				<input type="hidden" name="resource_id" value={{ resource.id }}>
+				<button type="submit" name="delete_resource" class="btn btn-danger">Delete</button>
+			</form>
+			{% endif %}
+		
+		{% endfor %}
+	</div>
+</div> <!-- container -->
+
+{% endblock %}

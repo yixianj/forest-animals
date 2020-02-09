@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background:transparent !important" class="jumbotron jumbotron-fluid">
+  <div class="container">
+	<form action="./login.php" method="post">
+	  <div class="form-group">
+	    <label for="username">Username</label>
+	    <input type="text" class="form-control" id="username"
+	           name="username" aria-describedby="username"
+	           placeholder="Username"
+	           value={{ username_value }}>
+	    <small id="username_error_message" class="form-text text-danger">{{ username_error_message }}</small>
+	  </div>
+	  <div class="form-group">
+	    <label for="password">Password</label>
+	    <input type="password" class="form-control" id="password"
+	           name="password" placeholder="Password"
+	           value={{ password_value }}>
+	    <small id="password_error_message" class="form-text text-danger">{{ password_error_message }}</small>
+	  </div>
+	  <button type="submit" class="btn btn-primary btn-lg" name="submit">Login</button>
+	  <a href="./create_account.php" class="btn btn-secondary btn-lg" role="button">Create Account</a>
+	</form>
+	</div> <!-- container -->
+</div> <!-- jumbotron -->
+{% endblock %}

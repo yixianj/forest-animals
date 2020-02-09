@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if is_admin == true %}
+<div style="background:transparent !important" class="jumbotron jumbotron-fluid">
+  <div class="container">
+	<form action="./learn.php" method="post" enctype="multipart/form-data">
+
+	  <div class="form-group">
+	    <label for="animal_name">Animal Name</label>
+	    <input type="text" class="form-control" id="animal_name"
+	           name="animal_name" aria-describedby="animal name"
+	           placeholder="i.e. Black Bear">
+	    <small id="animal_error_message" class="form-text text-danger">{{ animal_error_message }}</small>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="animal_description">Animal Description</label>
+	    <input type="text" class="form-control" id="animal_description"
+	           name="animal_description"
+	           value={{ animal_description }}>
+	    <small id="animal_description_error_message" class="form-text text-danger">{{ animal_description_error_message }}</small>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="upload_image">Upload Image</label>
+	    <input type="file" class="form-control" id="upload_image"
+	           name="upload_image">
+	    <small id="upload_error_message" class="form-text text-danger">{{ upload_error_message }}</small>
+	  </div>
+
+	  <button type="submit" class="btn btn-primary btn-lg" name="add_animal">Add Animal</button>
+
+	</form>
+	</div> <!-- container -->
+</div> <!-- jumbotron -->
+{% endif %}
+
+{% for animal in animals %}
+    {% if loop.index is divisible by(4) or loop.index == 1 %}
+    	<div class="card-group">
+    {% endif %}
+        <div class="card">
+        	<div class="embed-responsive embed-responsive-16by9">
+	        <img src="{{ animal.image_url }}" class="card-img-top embed-responsive-item" alt="Image of {{ animal.name }}">
+		    <div class="card-body embed-responsive-item">
+		      <h5 class="card-title">
+		      	<!-- Button trigger modal -->
+				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#{{ animal.name }}-modal">
+					{{ animal.name }}
+				</button>
+		      </h5>
+
+
+				<!-- Modal -->
+				<div class="modal" id="{{ animal.name }}-modal">
+					<div class="modal-dialog modal-dialog-scrollable" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">{{ animal.name }}</h5>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">X</button>
+							</div>
+							<div class="modal-body">
+								{% if is_admin == true %}
+									<form action="./learn.php" method="POST" enctype="multipart/form-data">
+
+									  <div class="form-group">
+									    <label for="animal_name">Animal Name</label>
+									    <input type="text" class="form-control" id="animal_name"
+									           name="animal_name" aria-describedby="animal name"
+									           value={{ animal.name }}>
+									    <small id="animal_error_message" class="form-text text-danger">{{ animal_error_message }}</small>
+									  </div>
+
+									  <div class="form-group">
+									  	<input type="hidden" name="array_index" value={{ animal.index }}>
+									    <label for="edit_info_textarea">Edit Animal Info</label>
+									    <textarea class="form-control" name="edit_info_textarea" rows="3">{{ animal.info }}
+									    </textarea>
+									  </div>
+
+									  <button type="submit" name="edit_animal" class="btn btn-primary btn-lg">Submit</button>
+									  <button type="submit" name="delete_animal" class="btn btn-danger btn-lg">Delete</a>
+									</form>
+								{% else %}
+								  <p>{{ animal.info }}</p>
+								{% endif %}
+							</div>
+					    </div>
+					</div>
+				</div> <!-- modal -->
+		    </div> <!-- card-body -->
+		</div>
+        </div> <!-- card -->
+    {% if loop.index is divisible by(3) or loop.index ==  animals|length %}
+    	</div> <!-- card-group -->
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

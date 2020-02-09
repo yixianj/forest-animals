@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h4 class="display-4">An error occurred</h4>
+		<p>{{ error_message }}</p>
+		<a class="btn btn-primary" type="button" href="{{ return_page_url }}">
+			{{ return_button_text }}
+		</a>
+	</div>
+</div> <!-- jumbotron -->
+{% endblock %}
